@@ -11,7 +11,6 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 warnings.filterwarnings("ignore")
 
 # --- CONFIGURACIÓN PARA LA NUBE (GITHUB) ---
-# En GitHub, todos los archivos estarán en la misma carpeta raíz
 CACHE_PATH = Path("cache_predicciones_LIVE.npz")
 MODEL_PATH = Path("modelo_fase4_v2_best.keras")
 TARGET_LEN = 60
@@ -66,7 +65,6 @@ def main():
     for tk in tickers:
         y_tk = get_yahoo_ticker(tk)
         try:
-            # Descargamos solo lo nuevo (1 hora de intervalo para máxima precisión)
             df_new = yf.download(y_tk, start="2026-01-01", interval="1h", progress=False, auto_adjust=True)
             if df_new.empty:
                 print(f"  > {tk} Sin datos nuevos.")
@@ -81,12 +79,12 @@ def main():
             c_old = old_data[f"c_{tk}"][-TARGET_LEN:]
             v_old = old_data[f"v_{tk}"][-TARGET_LEN:]
             
-            # Intentamos reconstruir el DataFrame de contexto con la mayor precisión posible
+            # Reconstrucción segura
+            h_old = old_data[f"h_{tk}"][-TARGET_LEN:] if f"h_{tk}" in old_data else c_old
+            l_old = old_data[f"l_{tk}"][-TARGET_LEN:] if f"l_{tk}" in old_data else c_old
+            
             df_old = pd.DataFrame({
-                "Close": c_old, 
-                "High": old_data.get(f"h_{tk}", c_old)[-TARGET_LEN:], 
-                "Low": old_data.get(f"l_{tk}", c_old)[-TARGET_LEN:], 
-                "Volume": v_old
+                "Close": c_old, "High": h_old, "Low": l_old, "Volume": v_old
             })
             
             df_combined = pd.concat([df_old, df_new]).sort_index()
