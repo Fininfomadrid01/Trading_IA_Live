@@ -1,6 +1,11 @@
 import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
 
+# --- MENSAJE DE VERIFICACIÓN ---
+print("\n" + "="*50)
+print(">>> EJECUTANDO VERSIÓN CON PARCHE SAFEDENSE V2 <<<")
+print("="*50 + "\n")
+
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -8,7 +13,7 @@ import keras
 from pathlib import Path
 import warnings
 
-# === ESTA ES LA PARTE QUE SOLUCIONA EL ERROR ===
+# === PARCHE SAFEDENSE ===
 @keras.utils.register_keras_serializable(package="Custom")
 class SafeDense(keras.layers.Dense):
     def __init__(self, *args, **kwargs):
@@ -16,7 +21,7 @@ class SafeDense(keras.layers.Dense):
         super().__init__(*args, **kwargs)
 
 CUSTOM_OBJECTS = {"Dense": SafeDense}
-# ===============================================
+# ========================
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 warnings.filterwarnings("ignore")
@@ -47,15 +52,15 @@ def build_windows_live(df):
     return np.concatenate([fw, vr[:,:,None], cn[:,:,None]], axis=2).astype(np.float32)
 
 def main():
-    print("INICIANDO ACTUALIZADOR CON PARCHE SafeDense...")
+    print("Iniciando carga de modelo...")
     if not CACHE_PATH.exists() or not MODEL_PATH.exists():
-        print("ERROR: Archivos no encontrados.")
+        print("Faltan archivos.")
         return
     
     old = np.load(str(CACHE_PATH))
     tickers = sorted([k.replace("preds_", "") for k in old.keys() if k.startswith("preds_")])
     
-    # IMPORTANTE: Aquí usamos el objeto personalizado
+    # Esta línea ahora debería estar cerca de la 80
     model = keras.models.load_model(str(MODEL_PATH), custom_objects=CUSTOM_OBJECTS, compile=False)
     
     new_cache = {}
@@ -83,7 +88,7 @@ def main():
             print(f" > {tk} ERROR: {e}")
             for p in ["preds","idx","c","l","h","v"]: new_cache[f"{p}_{tk}"] = old[f"{p}_{tk}"]
     np.savez_compressed(str(CACHE_PATH), **new_cache)
-    print("PROCESO TERMINADO CON ÉXITO.")
+    print("TERMINADO.")
 
 if __name__ == "__main__": main()
 
