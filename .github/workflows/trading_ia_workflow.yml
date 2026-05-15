@@ -2,9 +2,8 @@ name: Agente de Actualizacion Trading IA
 
 on:
   schedule:
-    # Se ejecuta de lunes a viernes a las 18:30 CET (17:30 UTC)
     - cron: '30 17 * * 1-5'
-  workflow_dispatch: # Permite ejecutarlo manualmente desde la web de GitHub
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -22,7 +21,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip' # Activa el cache automático de dependencias
+          cache: 'pip'
 
       - name: Instalar dependencias
         run: |
@@ -32,10 +31,13 @@ jobs:
       - name: Ejecutar Actualizador de IA
         run: python actualizador_nube.py
 
-      - name: Guardar cambios en la Base de Datos
+      - name: Generar Dashboard Visual
+        run: python generador_reporte.py
+
+      - name: Guardar cambios y Dashboard
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add cache_predicciones_LIVE.npz
-          git commit -m "Actualizacion automatica diaria: $(date +'%Y-%m-%d')" || echo "No hay cambios que guardar"
+          git add cache_predicciones_LIVE.npz README.md
+          git commit -m "Actualización diaria y Dashboard: $(date +'%Y-%m-%d')" || echo "Sin cambios"
           git push
