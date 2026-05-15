@@ -69,15 +69,26 @@ def main():
             # Descargamos solo lo nuevo (1 hora de intervalo para máxima precisión)
             df_new = yf.download(y_tk, start="2026-01-01", interval="1h", progress=False, auto_adjust=True)
             if df_new.empty:
+                print(f"  > {tk} Sin datos nuevos.")
                 for pfx in ["preds", "idx", "c", "l", "h", "v"]: new_cache[f"{pfx}_{tk}"] = old_data[f"{pfx}_{tk}"]
                 continue
             
             if isinstance(df_new.columns, pd.MultiIndex): df_new.columns = df_new.columns.get_level_values(0)
-            df_new.index = df_new.index.tz_localize(None)
+            if df_new.index.tz is not None:
+                df_new.index = df_new.index.tz_localize(None)
 
             # Reconstruir contexto
             c_old = old_data[f"c_{tk}"][-TARGET_LEN:]
-            df_old = pd.DataFrame({"Close": c_old, "High": c_old, "Low": c_old, "Volume": old_data[f"v_{tk}"][-TARGET_LEN:]})
+            v_old = old_data[f"v_{tk}"][-TARGET_LEN:]
+            
+            # Intentamos reconstruir el DataFrame de contexto con la mayor precisión posible
+            df_old = pd.DataFrame({
+                "Close": c_old, 
+                "High": old_data.get(f"h_{tk}", c_old)[-TARGET_LEN:], 
+                "Low": old_data.get(f"l_{tk}", c_old)[-TARGET_LEN:], 
+                "Volume": v_old
+            })
+            
             df_combined = pd.concat([df_old, df_new]).sort_index()
             df_combined = df_combined[~df_combined.index.duplicated(keep='last')]
             
@@ -88,15 +99,18 @@ def main():
                 new_cache[f"idx_{tk}"]   = np.concatenate([old_data[f"idx_{tk}"], df_new.index.astype(np.int64).values])
                 new_cache[f"c_{tk}"]     = np.concatenate([old_data[f"c_{tk}"], df_new["Close"].values.astype(np.float32)])
                 new_cache[f"v_{tk}"]     = np.concatenate([old_data[f"v_{tk}"], df_new["Volume"].values.astype(np.float32)])
-                # Para low/high simplificamos si no estan
                 new_cache[f"l_{tk}"]     = np.concatenate([old_data[f"l_{tk}"], df_new.get("Low", df_new["Close"]).values.astype(np.float32)])
                 new_cache[f"h_{tk}"]     = np.concatenate([old_data[f"h_{tk}"], df_new.get("High", df_new["Close"]).values.astype(np.float32)])
-                print(f"  > {tk} OK")
-        except:
+                print(f"  > {tk} OK (+{len(df_new)} velas)")
+            else:
+                print(f"  > {tk} ERROR: No se pudieron construir ventanas.")
+                for pfx in ["preds", "idx", "c", "l", "h", "v"]: new_cache[f"{pfx}_{tk}"] = old_data[f"{pfx}_{tk}"]
+        except Exception as e:
+            print(f"  > {tk} ERROR CRÍTICO: {str(e)}")
             for pfx in ["preds", "idx", "c", "l", "h", "v"]: new_cache[f"{pfx}_{tk}"] = old_data[f"{pfx}_{tk}"]
 
     np.savez_compressed(str(CACHE_PATH), **new_cache)
-    print("¡BASE DE DATOS ACTUALIZADA EN LA NUBE!")
+    print("\n¡BASE DE DATOS ACTUALIZADA EXITOSAMENTE!")
 
 if __name__ == "__main__":
     main()
