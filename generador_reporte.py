@@ -4,15 +4,16 @@ import yfinance as yf
 from pathlib import Path
 from datetime import datetime
 
-# --- CONFIGURACIÓN TFM (IA REGIME SWITCHING) ---
+# --- CONFIGURACIÓN ALGORÍTMICA FINAL ---
 CAPITAL_TOTAL = 10000.0  
 PROB_UMBRAL = 0.93       
+TOP_N = 8               # Seleccionamos solo los 8 mejores para la cartera
 CACHE_PATH = Path("cache_predicciones_LIVE.npz")
 REPORT_PATH = Path("README.md")
 
 RULES = {
-    "BULL": {"SL": "Trailing Stop 5.5%", "EXIT": "Tendencia", "COLOR": "🟢"},
-    "BEAR": {"SL": "Fijo 4.7%", "EXIT": "48h", "COLOR": "🔴"}
+    "BULL": {"SL": "Trailing Stop 5.5%", "EXIT": "Tendencia (Largo Plazo)", "COLOR": "🟢"},
+    "BEAR": {"SL": "Fijo 4.7%", "EXIT": "Cierre forzado a las 48h", "COLOR": "🔴"}
 }
 
 def get_market_info():
@@ -36,45 +37,61 @@ def main():
     data = np.load(str(CACHE_PATH))
     tickers = sorted([k.replace("preds_", "") for k in data.keys() if k.startswith("preds_")])
     regime, ibex_p, sma_p = get_market_info()
-    
     current_rules = RULES[regime]
-    now_str = datetime.now().strftime('%d/%m/%Y %H:%M')
     
-    md = [
-        f"# 🤖 IA Propuesta: Regime Switching (TFM)\n",
-        f"**Estado:** `ESTRATEGIA ACTIVA` | **Actualizado:** `{now_str} UTC`\n",
-        f"## 📊 Análisis de Régimen ({current_rules['COLOR']} {regime})",
-        f"- **IBEX 35:** {ibex_p:.2f} | **SMA200:** {sma_p:.2f}",
-        f"- **Configuración:** {current_rules['SL']} | Salida: {current_rules['EXIT']}\n",
-        f"---",
-        f"## 🎯 ORDENES OPERATIVAS PARA HOY",
-        f"| Ticker | Orden | Inversión (EUR) | Tier | Stop Loss | Confianza |",
-        f"| :--- | :--- | :--- | :--- | :--- | :--- |"
-    ]
-
+    all_signals = []
     for tk in tickers:
         preds = data[f"preds_{tk}"]
         idx = pd.to_datetime(data[f"idx_{tk}"])
         c, v = data[f"c_{tk}"], data[f"v_{tk}"]
         last_c, last_v = c[-1], v[-1]
         last_pred = preds[-1]
-        
-        # Corrección del error anterior: asignación en dos pasos
         clase = int(np.argmax(last_pred))
         prob = float(last_pred[clase])
         
-        if clase == 1 and prob >= PROB_UMBRAL:
+        # CHEQUEO DE CALIDAD AUTOMÁTICO
+        is_fresh = (datetime.now() - idx[-1]).total_seconds()/3600 < 48
+        
+        if clase == 1 and prob >= PROB_UMBRAL and is_fresh:
             tier, alloc = get_tier_info(tk, last_c, last_v)
-            inv_eur = CAPITAL_TOTAL * alloc
-            sl_desc = "TS 5.5%" if regime == "BULL" else f"Fijo: {(last_c*0.953):.3f}"
-            md.append(f"| **{tk}** | 🔵 COMPRAR | **{inv_eur:,.2f}€** | T{tier} | {sl_desc} | `{prob*100:.1f}%` |")
+            all_signals.append({
+                "tk": tk, "prob": prob, "inv": CAPITAL_TOTAL * alloc,
+                "price": last_c, "tier": tier, "date": idx[-1]
+            })
 
-    md.append("\n## 📒 Bitácora de Gestión Monetaria")
-    md.append(f"- **Capital Base:** {CAPITAL_TOTAL:,.0f}€")
-    md.append(f"- **Reglas:** Gestión por Tiers (15%/8%/4%) y Salida Asimétrica (Regime Switching).")
+    # ORDENAR POR CONFIANZA Y QUEDARNOS CON LOS MEJORES TOP_N
+    top_signals = sorted(all_signals, key=lambda x: x['prob'], reverse=True)[:TOP_N]
 
-    md.append(f"\n---\n*Dashboard automatizado bajo la arquitectura final del TFM: CNN-BiLSTM + Regime Switching.*")
+    md = [
+        f"# 🤖 Sistema de Trading IA - Dashboard TFM\n",
+        f"**Estado:** `MERCADO ABIERTO` | **Régimen:** {current_rules['COLOR']} {regime}\n",
+        f"## 🎯 CARTERA RECOMENDADA PARA HOY",
+        f"| Ticker | Orden | Inversión | Stop Loss | Confianza | Último Dato |",
+        f"| :--- | :--- | :--- | :--- | :--- | :--- |"
+    ]
+
+    for s in top_signals:
+        sl_desc = "TS 5.5%" if regime == "BULL" else f"Fijo: {(s['price']*0.953):.3f}"
+        md.append(f"| **{s['tk']}** | 🔵 COMPRAR | **{s['inv']:,.2f}€** | {sl_desc} | `{s['prob']*100:.1f}%` | {s['date'].strftime('%H:%M')} |")
+
+    if not top_signals:
+        md.append("| - | *Sin señales de alta confianza hoy* | - | - | - | - |")
+
+    md.append("\n## 📋 Instrucciones de Operativa (Sin Selección Manual)")
+    md.append(f"1. **Ejecución**: Comprar los activos de la tabla anterior con los importes indicados.")
+    md.append(f"2. **Gestión de Salida**: Aplicar `{current_rules['SL']}`. Salida por tiempo: `{current_rules['EXIT']}`.")
+    md.append(f"3. **Filtros Aplicados**: Solo se muestran activos con datos frescos (<48h) y Confianza > {PROB_UMBRAL*100}%.")
+
+    md.append(f"\n---\n## 🛠️ Health Check (Estado de la Red)")
+    md.append("| Ticker | Estado | Velas |")
+    md.append("| :--- | :--- | :--- |")
+    for tk in tickers:
+        idx = pd.to_datetime(data[f"idx_{tk}"])
+        q = "🟢 OK" if (datetime.now() - idx[-1]).total_seconds()/3600 < 48 else "🔴 ERROR"
+        md.append(f"| {tk} | {q} | {len(idx)} |")
 
     with open(REPORT_PATH, "w", encoding="utf-8") as f: f.write("\n".join(md))
 
 if __name__ == "__main__": main()
+
+
