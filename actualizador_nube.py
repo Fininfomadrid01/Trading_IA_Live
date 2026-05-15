@@ -1,11 +1,6 @@
 import os
 os.environ["KERAS_BACKEND"] = "tensorflow"
 
-# --- MENSAJE DE VERIFICACIÓN ---
-print("\n" + "="*50)
-print(">>> EJECUTANDO VERSIÓN CON PARCHE SAFEDENSE V2 <<<")
-print("="*50 + "\n")
-
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -13,15 +8,18 @@ import keras
 from pathlib import Path
 import warnings
 
-# === PARCHE SAFEDENSE ===
-@keras.utils.register_keras_serializable(package="Custom")
-class SafeDense(keras.layers.Dense):
-    def __init__(self, *args, **kwargs):
-        kwargs.pop('quantization_config', None)
-        super().__init__(*args, **kwargs)
+# === PARCHE DE NIVEL PROFUNDO (Bypass Global) ===
+from keras.src.layers.layer import Layer
+_old_init = Layer.__init__
+def _new_init(self, *args, **kwargs):
+    kwargs.pop('quantization_config', None)
+    return _old_init(self, *args, **kwargs)
+Layer.__init__ = _new_init
+# ===============================================
 
-CUSTOM_OBJECTS = {"Dense": SafeDense}
-# ========================
+print("\n" + "="*50)
+print(">>> EJECUTANDO VERSIÓN CON BYPASS GLOBAL V3 <<<")
+print("="*50 + "\n")
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 warnings.filterwarnings("ignore")
@@ -35,11 +33,8 @@ def get_yahoo_ticker(tk):
 
 def build_windows_live(df):
     if len(df) < TARGET_LEN + 1: return None
-    c = df["Close"].values.astype(np.float32)
-    h = df["High"].values.astype(np.float32)
-    l = df["Low"].values.astype(np.float32)
-    o = df.get("Open", c).values.astype(np.float32)
-    v = df["Volume"].values.astype(np.float32)
+    c, h, l = df["Close"].values.astype(np.float32), df["High"].values.astype(np.float32), df["Low"].values.astype(np.float32)
+    o, v = df.get("Open", c).values.astype(np.float32), df["Volume"].values.astype(np.float32)
     lr = np.zeros(len(df), np.float32)
     lr[1:] = np.diff(np.log(np.maximum(c, 1e-9)))
     from numpy.lib.stride_tricks import sliding_window_view
@@ -52,16 +47,12 @@ def build_windows_live(df):
     return np.concatenate([fw, vr[:,:,None], cn[:,:,None]], axis=2).astype(np.float32)
 
 def main():
-    print("Iniciando carga de modelo...")
-    if not CACHE_PATH.exists() or not MODEL_PATH.exists():
-        print("Faltan archivos.")
-        return
-    
+    if not CACHE_PATH.exists() or not MODEL_PATH.exists(): return
     old = np.load(str(CACHE_PATH))
     tickers = sorted([k.replace("preds_", "") for k in old.keys() if k.startswith("preds_")])
     
-    # Esta línea ahora debería estar cerca de la 80
-    model = keras.models.load_model(str(MODEL_PATH), custom_objects=CUSTOM_OBJECTS, compile=False)
+    print("Cargando modelo...")
+    model = keras.models.load_model(str(MODEL_PATH), compile=False)
     
     new_cache = {}
     for tk in tickers:
@@ -79,16 +70,13 @@ def main():
                 p = model.predict(X, verbose=0).astype(np.float16)
                 new_cache[f"preds_{tk}"] = np.concatenate([old[f"preds_{tk}"], p])
                 new_cache[f"idx_{tk}"] = np.concatenate([old[f"idx_{tk}"], df.index.astype(np.int64).values])
-                new_cache[f"c_{tk}"] = np.concatenate([old[f"c_{tk}"], df["Close"].values])
-                new_cache[f"v_{tk}"] = np.concatenate([old[f"v_{tk}"], df["Volume"].values])
-                new_cache[f"l_{tk}"] = np.concatenate([old[f"l_{tk}"], df.get("Low", df["Close"]).values])
-                new_cache[f"h_{tk}"] = np.concatenate([old[f"h_{tk}"], df.get("High", df["Close"]).values])
+                new_cache[f"c_{tk}"], new_cache[f"v_{tk}"] = np.concatenate([old[f"c_{tk}"], df["Close"].values]), np.concatenate([old[f"v_{tk}"], df["Volume"].values])
+                new_cache[f"l_{tk}"], new_cache[f"h_{tk}"] = np.concatenate([old[f"l_{tk}"], df.get("Low", df["Close"]).values]), np.concatenate([old[f"h_{tk}"], df.get("High", df["Close"]).values])
                 print(f" > {tk} OK")
         except Exception as e:
-            print(f" > {tk} ERROR: {e}")
+            print(f" > {tk} ERR: {e}")
             for p in ["preds","idx","c","l","h","v"]: new_cache[f"{p}_{tk}"] = old[f"{p}_{tk}"]
     np.savez_compressed(str(CACHE_PATH), **new_cache)
-    print("TERMINADO.")
+    print("FIN.")
 
 if __name__ == "__main__": main()
-
