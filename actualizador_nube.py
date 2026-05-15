@@ -8,14 +8,17 @@ import keras
 from pathlib import Path
 import warnings
 
-# === PARCHE DE EMERGENCIA PARA COMPATIBILIDAD ===
-from keras.src.layers.core.dense import Dense
-_old_init = Dense.__init__
-def _new_init(self, *args, **kwargs):
-    kwargs.pop('quantization_config', None)
-    return _old_init(self, *args, **kwargs)
-Dense.__init__ = _new_init
-# ===============================================
+# === SOLUCIÓN DEFINITIVA: CAPA DENSE SEGURA ===
+@keras.utils.register_keras_serializable(package="Custom")
+class SafeDense(keras.layers.Dense):
+    def __init__(self, *args, **kwargs):
+        # Eliminamos el parámetro problemático antes de pasarlo a la capa real
+        kwargs.pop('quantization_config', None)
+        super().__init__(*args, **kwargs)
+
+# Mapeamos 'Dense' a nuestra versión 'SafeDense'
+CUSTOM_OBJECTS = {"Dense": SafeDense}
+# ==============================================
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 warnings.filterwarnings("ignore")
@@ -47,12 +50,18 @@ def build_windows_live(df):
     return np.concatenate([fw, vr[:,:,None], cn[:,:,None]], axis=2).astype(np.float32)
 
 def main():
-    print("INICIANDO ACTUALIZADOR CON PARCHE DE COMPATIBILIDAD...")
-    if not CACHE_PATH.exists() or not MODEL_PATH.exists(): return
+    print("INICIANDO ACTUALIZADOR CON OBJETOS PERSONALIZADOS...")
+    if not CACHE_PATH.exists() or not MODEL_PATH.exists():
+        print("ERROR: Faltan archivos.")
+        return
     
     old = np.load(str(CACHE_PATH))
     tickers = sorted([k.replace("preds_", "") for k in old.keys() if k.startswith("preds_")])
-    model = keras.models.load_model(str(MODEL_PATH), compile=False)
+    
+    # CARGAMOS EL MODELO USANDO LOS OBJETOS PERSONALIZADOS
+    print(f"Cargando modelo con bypass de Dense...")
+    model = keras.models.load_model(str(MODEL_PATH), custom_objects=CUSTOM_OBJECTS, compile=False)
+    
     new_cache = {}
 
     for tk in tickers:
@@ -76,12 +85,16 @@ def main():
                 new_cache[f"v_{tk}"] = np.concatenate([old[f"v_{tk}"], df["Volume"].values])
                 new_cache[f"l_{tk}"] = np.concatenate([old[f"l_{tk}"], df.get("Low", df["Close"]).values])
                 new_cache[f"h_{tk}"] = np.concatenate([old[f"h_{tk}"], df.get("High", df["Close"]).values])
-                print(f" > {tk} OK")
+                print(f" > {tk} OK (+{len(df)} velas)")
+            else:
+                print(f" > {tk} ERROR ventanas")
+                for p in ["preds","idx","c","l","h","v"]: new_cache[f"{p}_{tk}"] = old[f"{p}_{tk}"]
         except Exception as e:
             print(f" > {tk} ERROR: {e}")
             for p in ["preds","idx","c","l","h","v"]: new_cache[f"{p}_{tk}"] = old[f"{p}_{tk}"]
 
     np.savez_compressed(str(CACHE_PATH), **new_cache)
-    print("ACTUALIZACIÓN COMPLETADA.")
+    print("ACTUALIZACIÓN COMPLETADA EXITOSAMENTE.")
 
 if __name__ == "__main__": main()
+
