@@ -8,17 +8,15 @@ import keras
 from pathlib import Path
 import warnings
 
-# === SOLUCIÓN DEFINITIVA: CAPA DENSE SEGURA ===
+# === ESTA ES LA PARTE QUE SOLUCIONA EL ERROR ===
 @keras.utils.register_keras_serializable(package="Custom")
 class SafeDense(keras.layers.Dense):
     def __init__(self, *args, **kwargs):
-        # Eliminamos el parámetro problemático antes de pasarlo a la capa real
         kwargs.pop('quantization_config', None)
         super().__init__(*args, **kwargs)
 
-# Mapeamos 'Dense' a nuestra versión 'SafeDense'
 CUSTOM_OBJECTS = {"Dense": SafeDense}
-# ==============================================
+# ===============================================
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 warnings.filterwarnings("ignore")
@@ -39,7 +37,6 @@ def build_windows_live(df):
     v = df["Volume"].values.astype(np.float32)
     lr = np.zeros(len(df), np.float32)
     lr[1:] = np.diff(np.log(np.maximum(c, 1e-9)))
-    
     from numpy.lib.stride_tricks import sliding_window_view
     f = np.stack([lr, (h-l)/c, (h-np.maximum(o,c))/(h-l+1e-9), (np.minimum(o,c)-l)/(h-l+1e-9), np.abs(c-o)/(h-l+1e-9), np.concatenate([[0]*5, (c[5:]-c[:-5])/c[:-5]])], axis=1)
     fw = sliding_window_view(f, (TARGET_LEN, 6))[:-1, 0]
@@ -50,32 +47,28 @@ def build_windows_live(df):
     return np.concatenate([fw, vr[:,:,None], cn[:,:,None]], axis=2).astype(np.float32)
 
 def main():
-    print("INICIANDO ACTUALIZADOR CON OBJETOS PERSONALIZADOS...")
+    print("INICIANDO ACTUALIZADOR CON PARCHE SafeDense...")
     if not CACHE_PATH.exists() or not MODEL_PATH.exists():
-        print("ERROR: Faltan archivos.")
+        print("ERROR: Archivos no encontrados.")
         return
     
     old = np.load(str(CACHE_PATH))
     tickers = sorted([k.replace("preds_", "") for k in old.keys() if k.startswith("preds_")])
     
-    # CARGAMOS EL MODELO USANDO LOS OBJETOS PERSONALIZADOS
-    print(f"Cargando modelo con bypass de Dense...")
+    # IMPORTANTE: Aquí usamos el objeto personalizado
     model = keras.models.load_model(str(MODEL_PATH), custom_objects=CUSTOM_OBJECTS, compile=False)
     
     new_cache = {}
-
     for tk in tickers:
         try:
             df = yf.download(get_yahoo_ticker(tk), start="2026-01-01", interval="1h", progress=False, auto_adjust=True)
             if df.empty:
                 for p in ["preds","idx","c","l","h","v"]: new_cache[f"{p}_{tk}"] = old[f"{p}_{tk}"]
                 continue
-            
             if df.index.tz: df.index = df.index.tz_localize(None)
             ctx = pd.DataFrame({"Close": old[f"c_{tk}"][-TARGET_LEN:], "High": old.get(f"h_{tk}", old[f"c_{tk}"])[-TARGET_LEN:], "Low": old.get(f"l_{tk}", old[f"c_{tk}"])[-TARGET_LEN:], "Volume": old[f"v_{tk}"][-TARGET_LEN:]})
             comb = pd.concat([ctx, df]).sort_index()
             comb = comb[~comb.index.duplicated(keep='last')]
-            
             X = build_windows_live(comb)
             if X is not None:
                 p = model.predict(X, verbose=0).astype(np.float16)
@@ -85,16 +78,12 @@ def main():
                 new_cache[f"v_{tk}"] = np.concatenate([old[f"v_{tk}"], df["Volume"].values])
                 new_cache[f"l_{tk}"] = np.concatenate([old[f"l_{tk}"], df.get("Low", df["Close"]).values])
                 new_cache[f"h_{tk}"] = np.concatenate([old[f"h_{tk}"], df.get("High", df["Close"]).values])
-                print(f" > {tk} OK (+{len(df)} velas)")
-            else:
-                print(f" > {tk} ERROR ventanas")
-                for p in ["preds","idx","c","l","h","v"]: new_cache[f"{p}_{tk}"] = old[f"{p}_{tk}"]
+                print(f" > {tk} OK")
         except Exception as e:
             print(f" > {tk} ERROR: {e}")
             for p in ["preds","idx","c","l","h","v"]: new_cache[f"{p}_{tk}"] = old[f"{p}_{tk}"]
-
     np.savez_compressed(str(CACHE_PATH), **new_cache)
-    print("ACTUALIZACIÓN COMPLETADA EXITOSAMENTE.")
+    print("PROCESO TERMINADO CON ÉXITO.")
 
 if __name__ == "__main__": main()
 
