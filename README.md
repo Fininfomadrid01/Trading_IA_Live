@@ -1,58 +1,70 @@
-# 🤖 IA Propuesta: Regime Switching (TFM)
+# 🤖 Sistema de Trading IA - Dashboard TFM
 
-**Estado:** `ESTRATEGIA ACTIVA` | **Actualizado:** `15/05/2026 11:09 UTC`
+**Estado:** `MERCADO ABIERTO` | **Régimen:** 🟢 BULL
 
-## 📊 Análisis de Régimen (🟢 BULL)
-- **IBEX 35:** 0.00 | **SMA200:** 0.00
-- **Configuración:** Trailing Stop 5.5% | Salida: Tendencia
-
----
-## 🎯 ORDENES OPERATIVAS PARA HOY
-| Ticker | Orden | Inversión (EUR) | Tier | Stop Loss | Confianza |
+## 🎯 CARTERA RECOMENDADA PARA HOY
+| Ticker | Orden | Inversión | Stop Loss | Confianza | Último Dato |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **ACS** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `96.5%` |
-| **ACX** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `93.8%` |
-| **ALM** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.7%` |
-| **ANE** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `93.6%` |
-| **BBVA** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `94.5%` |
-| **BKT** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.4%` |
-| **CABK** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `96.3%` |
-| **CIE** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `98.0%` |
-| **CLNX** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.1%` |
-| **COL** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.4%` |
-| **DOM** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `97.0%` |
-| **ENC** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `94.4%` |
-| **ENG** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.4%` |
-| **FCC** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.2%` |
-| **FDR** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.4%` |
-| **FER** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `97.8%` |
-| **GRF** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `97.9%` |
-| **IAG** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.1%` |
-| **IDR** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.0%` |
-| **ITX** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `94.9%` |
-| **LDA** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `96.5%` |
-| **LOG** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `94.9%` |
-| **MAP** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.7%` |
-| **MEL** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.1%` |
-| **MRL** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.2%` |
-| **MTS** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `94.4%` |
-| **NTGY** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `94.1%` |
-| **OHL** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `93.9%` |
-| **PHM** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `93.8%` |
-| **REE** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `94.5%` |
-| **REP** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `93.2%` |
-| **ROVI** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.3%` |
-| **SAB** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.2%` |
-| **SAN** | 🔵 COMPRAR | **800.00€** | T2 | TS 5.5% | `94.4%` |
-| **SCYR** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.6%` |
-| **SLR** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `93.1%` |
-| **TEF** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `96.0%` |
-| **TRE** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `97.7%` |
-| **UNI** | 🔵 COMPRAR | **400.00€** | T3 | TS 5.5% | `95.5%` |
+| **CIE** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `98.0%` | 08:00 |
+| **GRF** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.9%` | 08:00 |
+| **FER** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.8%` | 08:00 |
+| **TRE** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.7%` | 08:00 |
+| **DOM** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.0%` | 08:00 |
+| **ACS** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `96.5%` | 08:00 |
+| **LDA** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `96.5%` | 08:00 |
+| **CABK** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `96.3%` | 08:00 |
 
-## 📒 Bitácora de Gestión Monetaria
-- **Capital Base:** 10,000€
-- **Reglas:** Gestión por Tiers (15%/8%/4%) y Salida Asimétrica (Regime Switching).
+## 📋 Instrucciones de Operativa (Sin Selección Manual)
+1. **Ejecución**: Comprar los activos de la tabla anterior con los importes indicados.
+2. **Gestión de Salida**: Aplicar `Trailing Stop 5.5%`. Salida por tiempo: `Tendencia (Largo Plazo)`.
+3. **Filtros Aplicados**: Solo se muestran activos con datos frescos (<48h) y Confianza > 93.0%.
 
 ---
-*Dashboard automatizado bajo la arquitectura final del TFM: CNN-BiLSTM + Regime Switching.*
+## 🛠️ Health Check (Estado de la Red)
+| Ticker | Estado | Velas |
+| :--- | :--- | :--- |
+| ACS | 🟢 OK | 11383 |
+| ACX | 🟢 OK | 11382 |
+| AENA | 🟢 OK | 11384 |
+| ALM | 🟢 OK | 11378 |
+| AMS | 🟢 OK | 11384 |
+| ANA | 🟢 OK | 11384 |
+| ANE | 🟢 OK | 9673 |
+| BBVA | 🟢 OK | 11383 |
+| BKT | 🟢 OK | 11384 |
+| CABK | 🟢 OK | 11384 |
+| CIE | 🟢 OK | 11306 |
+| CLNX | 🟢 OK | 11384 |
+| COL | 🟢 OK | 11383 |
+| DOM | 🟢 OK | 11128 |
+| ELE | 🟢 OK | 11384 |
+| ENC | 🟢 OK | 11383 |
+| ENG | 🟢 OK | 11384 |
+| FCC | 🟢 OK | 10917 |
+| FDR | 🟢 OK | 11376 |
+| FER | 🟢 OK | 11384 |
+| GRF | 🟢 OK | 11379 |
+| IAG | 🟢 OK | 11384 |
+| IBE | 🟢 OK | 11378 |
+| IDR | 🟢 OK | 11384 |
+| ITX | 🟢 OK | 11384 |
+| LDA | 🟢 OK | 9650 |
+| LOG | 🟢 OK | 11383 |
+| MAP | 🟢 OK | 11384 |
+| MEL | 🟢 OK | 11384 |
+| MRL | 🟢 OK | 11384 |
+| MTS | 🟢 OK | 11384 |
+| NTGY | 🟢 OK | 11207 |
+| OHL | 🔴 ERROR | 1732 |
+| PHM | 🟢 OK | 11381 |
+| REE | 🔴 ERROR | 2378 |
+| REP | 🟢 OK | 11384 |
+| ROVI | 🟢 OK | 11193 |
+| SAB | 🟢 OK | 11383 |
+| SAN | 🟢 OK | 11384 |
+| SCYR | 🟢 OK | 11384 |
+| SLR | 🟢 OK | 11384 |
+| TEF | 🟢 OK | 11384 |
+| TRE | 🟢 OK | 11382 |
+| UNI | 🟢 OK | 11384 |
+| VIS | 🟢 OK | 11332 |
