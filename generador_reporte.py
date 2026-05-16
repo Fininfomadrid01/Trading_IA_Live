@@ -4,94 +4,111 @@ import yfinance as yf
 from pathlib import Path
 from datetime import datetime
 
-# --- CONFIGURACIÓN ALGORÍTMICA FINAL ---
-CAPITAL_TOTAL = 10000.0  
-PROB_UMBRAL = 0.93       
-TOP_N = 8               # Seleccionamos solo los 8 mejores para la cartera
+# --- CONFIGURACIÓN ---
 CACHE_PATH = Path("cache_predicciones_LIVE.npz")
 REPORT_PATH = Path("README.md")
 
-RULES = {
-    "BULL": {"SL": "Trailing Stop 5.5%", "EXIT": "Tendencia (Largo Plazo)", "COLOR": "🟢"},
-    "BEAR": {"SL": "Fijo 4.7%", "EXIT": "Cierre forzado a las 48h", "COLOR": "🔴"}
+# Umbrales optimizados por mercado
+MARKET_CONFIGS = {
+    'IBEX':   {'suffix': '.MC', 'prob': 0.923, 'emoji': '🇪🇸'},
+    'FTSE':   {'suffix': '.L',  'prob': 0.935, 'emoji': '🇬🇧'},
+    'USA':    {'suffix': '',    'prob': 0.954, 'emoji': '🇺🇸'}
 }
 
-def get_market_info():
-    try:
-        ibex = yf.download("^IBEX", period="2y", progress=False)
-        close = ibex["Close"]
-        sma200 = close.rolling(window=200).mean().iloc[-1]
-        last = close.iloc[-1]
-        regime = "BULL" if last > sma200 else "BEAR"
-        return regime, last, sma200
-    except: return "BULL", 0, 0
+def get_market_regimes():
+    regimes = {}
+    indices = {"IBEX 35": "^IBEX", "NASDAQ 100": "^NDX", "S&P 500": "SPY"}
+    for name, ticker in indices.items():
+        try:
+            data = yf.download(ticker, period="1y", progress=False, auto_adjust=True)
+            if data.empty: 
+                regimes[name] = ("Desconocido", 0)
+                continue
+            close = data["Close"]
+            sma200 = close.rolling(window=200).mean().iloc[-1]
+            last = close.iloc[-1]
+            is_bull = last > sma200
+            regStr = "🟢 BULL" if is_bull else "🔴 BEAR"
+            regimes[name] = (regStr, last)
+        except:
+            regimes[name] = ("Error", 0)
+    return regimes
 
-def get_tier_info(tk, price, volume):
-    vol_efectivo = price * volume
-    if vol_efectivo > 40_000_000: return 1, 0.15 
-    if vol_efectivo > 10_000_000: return 2, 0.08 
-    return 3, 0.04                               
+def get_config_for_ticker(tk):
+    if tk.endswith(".MC"): return MARKET_CONFIGS['IBEX']
+    if tk.endswith(".L"):  return MARKET_CONFIGS['FTSE']
+    return MARKET_CONFIGS['USA']
 
 def main():
-    if not CACHE_PATH.exists(): return
+    if not CACHE_PATH.exists():
+        print("ERROR: No hay cache.")
+        return
+
     data = np.load(str(CACHE_PATH))
     tickers = sorted([k.replace("preds_", "") for k in data.keys() if k.startswith("preds_")])
-    regime, ibex_p, sma_p = get_market_info()
-    current_rules = RULES[regime]
     
-    all_signals = []
-    for tk in tickers:
-        preds = data[f"preds_{tk}"]
-        idx = pd.to_datetime(data[f"idx_{tk}"])
-        c, v = data[f"c_{tk}"], data[f"v_{tk}"]
-        last_c, last_v = c[-1], v[-1]
-        last_pred = preds[-1]
-        clase = int(np.argmax(last_pred))
-        prob = float(last_pred[clase])
-        
-        # CHEQUEO DE CALIDAD AUTOMÁTICO
-        is_fresh = (datetime.now() - idx[-1]).total_seconds()/3600 < 48
-        
-        if clase == 1 and prob >= PROB_UMBRAL and is_fresh:
-            tier, alloc = get_tier_info(tk, last_c, last_v)
-            all_signals.append({
-                "tk": tk, "prob": prob, "inv": CAPITAL_TOTAL * alloc,
-                "price": last_c, "tier": tier, "date": idx[-1]
-            })
+    regimes = get_market_regimes()
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # ORDENAR POR CONFIANZA Y QUEDARNOS CON LOS MEJORES TOP_N
-    top_signals = sorted(all_signals, key=lambda x: x['prob'], reverse=True)[:TOP_N]
-
+    # --- INICIO DEL DASHBOARD GLOBAL ---
     md = [
-        f"# 🤖 Sistema de Trading IA - Dashboard TFM\n",
-        f"**Estado:** `MERCADO ABIERTO` | **Régimen:** {current_rules['COLOR']} {regime}\n",
-        f"## 🎯 CARTERA RECOMENDADA PARA HOY",
-        f"| Ticker | Orden | Inversión | Stop Loss | Confianza | Último Dato |",
-        f"| :--- | :--- | :--- | :--- | :--- | :--- |"
+        f"# 🌍 Dashboard Global de Trading IA",
+        f"**Estado del Sistema:** `OPERATIVO` | **Última sincronización:** `{now_str} UTC`\n",
+        f"## 🌐 Monitor de Mercados (Regime Switching)",
+        f"| Mercado | Estado Actual | Último Cierre |",
+        f"| :--- | :--- | :--- |"
     ]
+    
+    for name, (regStr, price) in regimes.items():
+        md.append(f"| {name} | {regStr} | {price:.2f} |")
 
-    for s in top_signals:
-        sl_desc = "TS 5.5%" if regime == "BULL" else f"Fijo: {(s['price']*0.953):.3f}"
-        md.append(f"| **{s['tk']}** | 🔵 COMPRAR | **{s['inv']:,.2f}€** | {sl_desc} | `{s['prob']*100:.1f}%` | {s['date'].strftime('%H:%M')} |")
+    md.append("\n---\n## 🚀 Señales de Inferencia (Optimización Genética)")
+    md.append(f"| Mercado | Ticker | Señal | Confianza | Salud Datos |")
+    md.append(f"| :--- | :--- | :--- | :--- | :--- |")
 
-    if not top_signals:
-        md.append("| - | *Sin señales de alta confianza hoy* | - | - | - | - |")
-
-    md.append("\n## 📋 Instrucciones de Operativa (Sin Selección Manual)")
-    md.append(f"1. **Ejecución**: Comprar los activos de la tabla anterior con los importes indicados.")
-    md.append(f"2. **Gestión de Salida**: Aplicar `{current_rules['SL']}`. Salida por tiempo: `{current_rules['EXIT']}`.")
-    md.append(f"3. **Filtros Aplicados**: Solo se muestran activos con datos frescos (<48h) y Confianza > {PROB_UMBRAL*100}%.")
-
-    md.append(f"\n---\n## 🛠️ Health Check (Estado de la Red)")
-    md.append("| Ticker | Estado | Velas |")
-    md.append("| :--- | :--- | :--- |")
+    signals_found = 0
     for tk in tickers:
+        try:
+            preds = data[f"preds_{tk}"]
+            idx = pd.to_datetime(data[f"idx_{tk}"])
+            last_date = idx[-1]
+            
+            cfg = get_config_for_ticker(tk)
+            last_pred = preds[-1]
+            clase = np.argmax(last_pred)
+            prob = last_pred[clase]
+            
+            # Calidad de datos
+            time_diff = (datetime.now() - last_date).total_seconds() / 3600
+            quality_emoji = "🟢 OK" if time_diff < 48 else "🔴"
+            
+            # Filtro por umbral optimizado por mercado
+            if clase == 1 and prob >= cfg['prob']:
+                signals_found += 1
+                md.append(f"| {cfg['emoji']} | **{tk}** | COMPRA | `{prob*100:.1f}%` | {quality_emoji} |")
+        except: pass
+
+    if signals_found == 0:
+        md.append("| - | - | *Sin señales que superen los umbrales de confianza hoy* | - | - |")
+
+    md.append("\n## 🛠️ Health Check de Activos")
+    md.append("| Ticker | Velas en Cache | Último Dato | Estado |")
+    md.append("| :--- | :--- | :--- | :--- |")
+
+    for tk in tickers[:20]: # Mostramos los 20 primeros para no saturar el README
         idx = pd.to_datetime(data[f"idx_{tk}"])
-        q = "🟢 OK" if (datetime.now() - idx[-1]).total_seconds()/3600 < 48 else "🔴 ERROR"
-        md.append(f"| {tk} | {q} | {len(idx)} |")
+        last_date = idx[-1]
+        count = len(idx)
+        time_diff = (datetime.now() - last_date).total_seconds() / 3600
+        quality_emoji = "🟢" if time_diff < 48 else "🔴"
+        md.append(f"| {tk} | {count} | {last_date.strftime('%Y-%m-%d')} | {quality_emoji} |")
 
-    with open(REPORT_PATH, "w", encoding="utf-8") as f: f.write("\n".join(md))
+    md.append("\n---\n*Este Dashboard es el resultado de la investigación 'Generalización de Modelos de Deep Learning en Mercados Globales' (TFM 2026).*")
 
-if __name__ == "__main__": main()
+    with open(REPORT_PATH, "w", encoding="utf-8") as f:
+        f.write("\n".join(md))
 
+    print(f"Dashboard global generado en {REPORT_PATH}")
 
+if __name__ == "__main__":
+    main()
