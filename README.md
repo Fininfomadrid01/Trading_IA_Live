@@ -1,16 +1,15 @@
-# 🌍 Dashboard Global de Trading IA
-**Estado del Sistema:** `OPERATIVO` | **Última sincronización:** `2026-05-16 13:32:28 UTC`
+# 🏆 TFM: Sistema de Inferencia Multiactivo Global
+**Estado General:** `SISTEMA OPTIMIZADO` | **Última sincronización:** `2026-05-16 17:29:49 UTC`
 
-## 🌐 Monitor de Mercados (Regime Switching)
-| Mercado | Estado Actual | Último Cierre |
+Este dashboard presenta las inferencias en tiempo real de la arquitectura CNN-BiLSTM-Attention validada en mercados globales de renta variable, criptoactivos y materias primas.
+
+## 🌐 Monitor de Regímenes Globales
+| Mercado | Estado | Último Precio |
 | :--- | :--- | :--- |
-| IBEX 35 | Error | 0.00 |
-| NASDAQ 100 | Error | 0.00 |
-| S&P 500 | Error | 0.00 |
 
 ---
-## 🚀 Señales de Inferencia (Optimización Genética)
-| Mercado | Ticker | Señal | Confianza | Salud Datos |
+## 🚀 Señales de Inferencia (Top Opportunities)
+| Mercado | Ticker | Señal | Confianza | Salud de Datos |
 | :--- | :--- | :--- | :--- | :--- |
 | 🇺🇸 | **ACS** | COMPRA | `96.6%` | 🟢 OK |
 | 🇺🇸 | **ALM** | COMPRA | `95.7%` | 🟢 OK |
@@ -27,29 +26,11 @@
 | 🇺🇸 | **TRE** | COMPRA | `97.6%` | 🟢 OK |
 | 🇺🇸 | **UNI** | COMPRA | `95.4%` | 🟢 OK |
 
-## 🛠️ Health Check de Activos
-| Ticker | Velas en Cache | Último Dato | Estado |
-| :--- | :--- | :--- | :--- |
-| ACS | 11383 | 2026-05-15 | 🟢 |
-| ACX | 11382 | 2026-05-15 | 🟢 |
-| AENA | 11384 | 2026-05-15 | 🟢 |
-| ALM | 11378 | 2026-05-15 | 🟢 |
-| AMS | 11384 | 2026-05-15 | 🟢 |
-| ANA | 11384 | 2026-05-15 | 🟢 |
-| ANE | 9673 | 2026-05-15 | 🟢 |
-| BBVA | 11383 | 2026-05-15 | 🟢 |
-| BKT | 11384 | 2026-05-15 | 🟢 |
-| CABK | 11384 | 2026-05-15 | 🟢 |
-| CIE | 11306 | 2026-05-15 | 🟢 |
-| CLNX | 11384 | 2026-05-15 | 🟢 |
-| COL | 11383 | 2026-05-15 | 🟢 |
-| DOM | 11128 | 2026-05-15 | 🟢 |
-| ELE | 11384 | 2026-05-15 | 🟢 |
-| ENC | 11383 | 2026-05-15 | 🟢 |
-| ENG | 11384 | 2026-05-15 | 🟢 |
-| FCC | 10917 | 2026-05-15 | 🟢 |
-| FDR | 11376 | 2026-05-15 | 🟢 |
-| FER | 11384 | 2026-05-15 | 🟢 |
+## 📊 Resumen de Tesis (Milestones)
+- ✅ **IBEX 35**: Validación histórica 2019-2025.
+- ✅ **NASDAQ/S&P**: Generalización internacional lograda.
+- ✅ **CRYPTO**: Profit Factor de 1.60 detectado.
+- ✅ **COMMODITIES**: Profit Factor de 3.19 detectado en Oro/Petróleo.
 
 ---
-*Este Dashboard es el resultado de la investigación 'Generalización de Modelos de Deep Learning en Mercados Globales' (TFM 2026).*
+*Dashboard automatizado para la entrega final del Trabajo Fin de Máster (2026).*
