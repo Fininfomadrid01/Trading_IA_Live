@@ -1,70 +1,55 @@
-# 🤖 Sistema de Trading IA - Dashboard TFM
+# 🌍 Dashboard Global de Trading IA
+**Estado del Sistema:** `OPERATIVO` | **Última sincronización:** `2026-05-16 13:32:28 UTC`
 
-**Estado:** `MERCADO ABIERTO` | **Régimen:** 🟢 BULL
-
-## 🎯 CARTERA RECOMENDADA PARA HOY
-| Ticker | Orden | Inversión | Stop Loss | Confianza | Último Dato |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **CIE** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `98.0%` | 08:00 |
-| **GRF** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.9%` | 08:00 |
-| **FER** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.8%` | 08:00 |
-| **TRE** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.7%` | 08:00 |
-| **DOM** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `97.0%` | 08:00 |
-| **ACS** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `96.5%` | 08:00 |
-| **LDA** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `96.5%` | 08:00 |
-| **CABK** | 🔵 COMPRAR | **400.00€** | TS 5.5% | `96.3%` | 08:00 |
-
-## 📋 Instrucciones de Operativa (Sin Selección Manual)
-1. **Ejecución**: Comprar los activos de la tabla anterior con los importes indicados.
-2. **Gestión de Salida**: Aplicar `Trailing Stop 5.5%`. Salida por tiempo: `Tendencia (Largo Plazo)`.
-3. **Filtros Aplicados**: Solo se muestran activos con datos frescos (<48h) y Confianza > 93.0%.
+## 🌐 Monitor de Mercados (Regime Switching)
+| Mercado | Estado Actual | Último Cierre |
+| :--- | :--- | :--- |
+| IBEX 35 | Error | 0.00 |
+| NASDAQ 100 | Error | 0.00 |
+| S&P 500 | Error | 0.00 |
 
 ---
-## 🛠️ Health Check (Estado de la Red)
-| Ticker | Estado | Velas |
-| :--- | :--- | :--- |
-| ACS | 🟢 OK | 11383 |
-| ACX | 🟢 OK | 11382 |
-| AENA | 🟢 OK | 11384 |
-| ALM | 🟢 OK | 11378 |
-| AMS | 🟢 OK | 11384 |
-| ANA | 🟢 OK | 11384 |
-| ANE | 🟢 OK | 9673 |
-| BBVA | 🟢 OK | 11383 |
-| BKT | 🟢 OK | 11384 |
-| CABK | 🟢 OK | 11384 |
-| CIE | 🟢 OK | 11306 |
-| CLNX | 🟢 OK | 11384 |
-| COL | 🟢 OK | 11383 |
-| DOM | 🟢 OK | 11128 |
-| ELE | 🟢 OK | 11384 |
-| ENC | 🟢 OK | 11383 |
-| ENG | 🟢 OK | 11384 |
-| FCC | 🟢 OK | 10917 |
-| FDR | 🟢 OK | 11376 |
-| FER | 🟢 OK | 11384 |
-| GRF | 🟢 OK | 11379 |
-| IAG | 🟢 OK | 11384 |
-| IBE | 🟢 OK | 11378 |
-| IDR | 🟢 OK | 11384 |
-| ITX | 🟢 OK | 11384 |
-| LDA | 🟢 OK | 9650 |
-| LOG | 🟢 OK | 11383 |
-| MAP | 🟢 OK | 11384 |
-| MEL | 🟢 OK | 11384 |
-| MRL | 🟢 OK | 11384 |
-| MTS | 🟢 OK | 11384 |
-| NTGY | 🟢 OK | 11207 |
-| OHL | 🔴 ERROR | 1732 |
-| PHM | 🟢 OK | 11381 |
-| REE | 🔴 ERROR | 2378 |
-| REP | 🟢 OK | 11384 |
-| ROVI | 🟢 OK | 11193 |
-| SAB | 🟢 OK | 11383 |
-| SAN | 🟢 OK | 11384 |
-| SCYR | 🟢 OK | 11384 |
-| SLR | 🟢 OK | 11384 |
-| TEF | 🟢 OK | 11384 |
-| TRE | 🟢 OK | 11382 |
-| UNI | 🟢 OK | 11384 |
-| VIS | 🟢 OK | 11332 |
+## 🚀 Señales de Inferencia (Optimización Genética)
+| Mercado | Ticker | Señal | Confianza | Salud Datos |
+| :--- | :--- | :--- | :--- | :--- |
+| 🇺🇸 | **ACS** | COMPRA | `96.6%` | 🟢 OK |
+| 🇺🇸 | **ALM** | COMPRA | `95.7%` | 🟢 OK |
+| 🇺🇸 | **BKT** | COMPRA | `95.4%` | 🟢 OK |
+| 🇺🇸 | **CABK** | COMPRA | `96.3%` | 🟢 OK |
+| 🇺🇸 | **CIE** | COMPRA | `98.0%` | 🟢 OK |
+| 🇺🇸 | **DOM** | COMPRA | `97.0%` | 🟢 OK |
+| 🇺🇸 | **FER** | COMPRA | `97.8%` | 🟢 OK |
+| 🇺🇸 | **GRF** | COMPRA | `97.9%` | 🟢 OK |
+| 🇺🇸 | **LDA** | COMPRA | `96.5%` | 🟢 OK |
+| 🇺🇸 | **MAP** | COMPRA | `95.7%` | 🟢 OK |
+| 🇺🇸 | **SCYR** | COMPRA | `95.6%` | 🟢 OK |
+| 🇺🇸 | **TEF** | COMPRA | `96.0%` | 🟢 OK |
+| 🇺🇸 | **TRE** | COMPRA | `97.6%` | 🟢 OK |
+| 🇺🇸 | **UNI** | COMPRA | `95.4%` | 🟢 OK |
+
+## 🛠️ Health Check de Activos
+| Ticker | Velas en Cache | Último Dato | Estado |
+| :--- | :--- | :--- | :--- |
+| ACS | 11383 | 2026-05-15 | 🟢 |
+| ACX | 11382 | 2026-05-15 | 🟢 |
+| AENA | 11384 | 2026-05-15 | 🟢 |
+| ALM | 11378 | 2026-05-15 | 🟢 |
+| AMS | 11384 | 2026-05-15 | 🟢 |
+| ANA | 11384 | 2026-05-15 | 🟢 |
+| ANE | 9673 | 2026-05-15 | 🟢 |
+| BBVA | 11383 | 2026-05-15 | 🟢 |
+| BKT | 11384 | 2026-05-15 | 🟢 |
+| CABK | 11384 | 2026-05-15 | 🟢 |
+| CIE | 11306 | 2026-05-15 | 🟢 |
+| CLNX | 11384 | 2026-05-15 | 🟢 |
+| COL | 11383 | 2026-05-15 | 🟢 |
+| DOM | 11128 | 2026-05-15 | 🟢 |
+| ELE | 11384 | 2026-05-15 | 🟢 |
+| ENC | 11383 | 2026-05-15 | 🟢 |
+| ENG | 11384 | 2026-05-15 | 🟢 |
+| FCC | 10917 | 2026-05-15 | 🟢 |
+| FDR | 11376 | 2026-05-15 | 🟢 |
+| FER | 11384 | 2026-05-15 | 🟢 |
+
+---
+*Este Dashboard es el resultado de la investigación 'Generalización de Modelos de Deep Learning en Mercados Globales' (TFM 2026).*
