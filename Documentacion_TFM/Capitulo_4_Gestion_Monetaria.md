@@ -25,7 +25,17 @@ Para resolver este problema de manera limpia y sin incurrir en sesgo de conocimi
 
 Esta arquitectura restringe dramáticamente el riesgo sistémico de los chicharros, forzando a la cartera a priorizar de forma algorítmica las ejecuciones institucionales.
 
-## 4.4. Teoría Anti-Martingala Calibrada
+## 4.4. Generalización Internacional: Presupuestación de Riesgo (Risk Budgeting)
+Aunque en los mercados internacionales (NASDAQ 100, FTSE 100, Criptomonedas y Futuros sobre Commodities) no exista un riesgo real de *slippage* debido a su colosal volumen y profundidad diaria —haciendo innecesaria la restricción de liquidez por Tiers—, sí resulta obligatorio limitar el capital asignado en base a su perfil de **Volatilidad y Correlación**. En finanzas cuantitativas profesionales, esta estrategia de control se denomina **Presupuestación de Riesgo (Risk Budgeting)**.
+
+Si el sistema tratase a todos los activos por igual asignándoles un presupuesto máximo (Tier 1 del 15%), la cartera global sufriría desplomes (*drawdowns*) extremos e inaceptables cuando los activos de alta volatilidad (como el Bitcoin o el Petróleo) experimentasen correcciones bruscas. Por consiguiente, el motor global macro de la plataforma asigna de forma nativa equivalencias de Tiers ajustadas a la volatilidad histórica de cada tipo de activo:
+*   **Equivalencia a Tier 3 (Exposición Base del 4% - 5%):** Se aplica a **Criptoactivos (ETFs IBIT / ETHA)**. No es por falta de liquidez (poseen profundidad de sobra), sino para neutralizar su volatilidad extrema. Limitar la posición al 4% actúa como un amortiguador, garantizando que un latigazo del -15% en el Bitcoin no altere de forma catastrófica la curva de capital de la cuenta.
+*   **Equivalencia a Tier 2 (Exposición Base del 8%):** Se aplica a **Materias Primas (Oro/Petróleo)** y a la **Bolsa de Londres (FTSE 100)**. Ofrecen una volatilidad media-baja y actúan como excelentes diversificadores globales o de activos reales.
+*   **Equivalencia a Tier 1 (Exposición Base del 10% - 15%):** Se aplica a las **Blue Chips del NASDAQ 100 e IBEX 35**. Constituyen el motor de crecimiento y el pilar direccional de renta variable principal de la cartera.
+
+Esta sofisticación dota al sistema de una robustez matemática de grado institucional, permitiendo su despliegue y preservación de capital multiactivo.
+
+## 4.5. Teoría Anti-Martingala Calibrada
 El despliegue estático de capital es subóptimo, ya que ignora el momento probabilístico de la serie. Para maximizar el efecto del interés compuesto sin incrementar el riesgo de ruina, se integró una política de **Anti-Martingala Calibrada**. 
 
 A diferencia de las estrategias suicidas de Martingala (que doblan la apuesta al perder), la Anti-Martingala protege el capital en periodos de ruido y lo acelera en periodos de "Edge" direccional:
@@ -36,5 +46,5 @@ A diferencia de las estrategias suicidas de Martingala (que doblan la apuesta al
 
 Por tanto, una operación del Tier 1 puede expandir su riesgo dinámicamente hasta comprometer el 30% del capital si, y solo si, la inteligencia artificial está atravesando una racha estadística excepcionalmente predecible.
 
-## 4.5. Resolución del "Cash Drag" e Integridad Contable
+## 4.6. Resolución del "Cash Drag" e Integridad Contable
 Finalmente, el modelo aborda el dilema clásico del *Cash Drag* (capital no invertido) bajo la restricción del efectivo. En situaciones donde múltiples señales coinciden en el mismo día temporal, el modelo simula el tiempo exacto. Ordena las oportunidades priorizando **estrictamente por la Probabilidad emitida por la CNN**, calculando el tamaño ($Size = Equidad \times Tier \times M_T$). Si la "Caja Restante" es matemáticamente inferior al tamaño requerido, el simulador institucional rechaza la operación instantáneamente, replicando la escasez de margen real y validando su credibilidad empírica total.
