@@ -1,0 +1,23 @@
+# CAPÍTULO 1: INTRODUCCIÓN Y MARCO TEÓRICO
+
+## 1.1. Introducción
+El constante avance de la capacidad computacional y la disponibilidad masiva de datos estructurados han transformado radicalmente los mercados financieros. Durante décadas, el análisis de series temporales financieras estuvo dominado por modelos estadísticos lineales, como ARIMA o GARCH, los cuales asumen que las series de precios presentan estacionariedad y distribuciones normales. Sin embargo, la literatura empírica moderna ha demostrado sistemáticamente que los mercados bursátiles son sistemas dinámicos complejos, caracterizados por alta volatilidad, *fat tails* (colas pesadas), heterocedasticidad y fuertes componentes de ruido no lineal.
+
+En este contexto, el presente Trabajo de Fin de Máster (TFM) propone el desarrollo, entrenamiento y validación de una arquitectura híbrida de *Deep Learning* (Aprendizaje Profundo) capaz de extraer de forma autónoma patrones complejos de la microestructura del mercado bursátil español (IBEX 35). Para ello, se plantea un enfoque superestructurado que aúna Redes Neuronales Convolucionales (CNN) unidimensionales, orientadas a la extracción de características topológicas locales de los precios, con Redes de Memoria a Corto y Largo Plazo Bidireccionales (Bi-LSTM), diseñadas para capturar las dependencias temporales y la secuencia lógica del mercado. Además, se integra un Mecanismo de Atención (*Attention Mechanism*) que permite al modelo ponderar dinámicamente qué momentos del pasado son más relevantes para la predicción futura.
+
+## 1.2. Justificación del Uso de Deep Learning en Mercados Financieros
+A diferencia de los modelos tradicionales de *Machine Learning* como Random Forest o Support Vector Machines (SVM), que requieren de un laborioso proceso de ingeniería de características (*feature engineering*) guiado por el ser humano, el Deep Learning permite el aprendizaje de representaciones de manera jerárquica y directa desde los datos crudos (*raw data*).
+
+Esta característica es fundamental en la operativa de alta y media frecuencia, donde los patrones subyacentes son efímeros e invisibles al ojo humano. En lugar de predefinir indicadores técnicos clásicos (RSI, MACD), el sistema propuesto ingiere tensores multidimensionales compuestos por datos OHLCV (Open, High, Low, Close, Volume) sin procesar, delegando en las capas convolucionales la responsabilidad de descubrir los predictores alfa más eficientes.
+
+## 1.3. Limitaciones Previas y el Problema de la Supervivencia
+Gran parte de la investigación académica previa en predicción financiera sufre de graves sesgos metodológicos que invalidan sus resultados fuera del entorno de laboratorio (*out-of-sample*). El más crítico de ellos es el **Sesgo de Supervivencia** (*Survivorship Bias*) y la **Contaminación por Eventos Corporativos**.
+
+Es práctica común utilizar las bases de datos históricas de índices bursátiles asumiendo que los componentes actuales han sido los mismos históricamente. Esto ignora a las empresas que quebraron o fueron excluidas del índice, sesgando artificialmente el rendimiento hacia los activos "ganadores". Además, los eventos de dilución de capital, como el reparto de dividendos (especialmente el formato *Scrip Dividend* tan común en España) o los desdoblamientos de acciones (*Splits*), generan caídas artificiales de precios que engañan a las redes neuronales, induciéndolas a identificar patrones bajistas inexistentes.
+
+## 1.4. Objetivos del Trabajo de Fin de Máster
+Para abordar estos desafíos metodológicos, este TFM establece los siguientes objetivos:
+1. **Auditoría y Corrección de Datos:** Desarrollar un pipeline metodológico robusto que ajuste matemáticamente la serie histórica intradiaria del IBEX 35 (2018-2025) aislando el efecto del sesgo de supervivencia y de las acciones corporativas.
+2. **Desarrollo de Arquitectura Neuronal:** Diseñar e implementar un modelo de clasificación multiclase (CNN + BiLSTM + Attention) optimizado en GPU que prediga las continuaciones e inversiones de tendencia con un umbral de confianza estadísticamente significativo.
+3. **Validación Pluridimensional:** Evaluar el rendimiento del modelo no solo a través de métricas clásicas de Machine Learning (F1-Score, Precision, Recall), sino traduciendo estas probabilidades a **Esperanza Matemática** operativa (Plano de la Señal).
+4. **Gestión Monetaria Institucional:** Acoplar el modelo predictivo a un motor de ejecución (Plano de la Cartera) que simule de forma hiperrealista la asunción de riesgos, incorporando restricciones de liquidez por *Tiers*, cobro de comisiones dinámicas y la aplicación de reinversiones por la Teoría Anti-Martingala calibrada.

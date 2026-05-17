@@ -1,0 +1,5 @@
+SISTEMA DE TRADING IA - RESULTADOS FINALES
+------------------------------------------
+ROI Bolsa (Multiactivo): 80.72%
+ROI Renta Fija (SHY):    9.30%
+ROI TOTAL COMBINADO:     90.02%

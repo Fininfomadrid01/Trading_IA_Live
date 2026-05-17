@@ -1,0 +1,22 @@
+# Ignore data files to stay under GitHub limits
+*.zip
+*.parquet
+*.xlsx
+*.npz
+*.zip
+*.csv
+# But do NOT ignore the operational CSVs we want to show
+!Operaciones_Globales_TFM_2025_2026.csv
+!Operaciones_LIVE_Trading_2026.csv
+!Operaciones_TFM_2025_2026.csv
+!Operaciones_Diversificadas_TFM_2025_2026.csv
+
+# Ignore logs
+*.txt
+!RESULTADOS_FINALES_DIVERSIFICADOS.txt
+*.log
+
+# Python cache
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

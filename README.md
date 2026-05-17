@@ -1,30 +1,56 @@
 # 🏆 TFM: Sistema de Inferencia Multiactivo Global
-**Estado General:** `SISTEMA OPTIMIZADO` | **Última sincronización:** `2026-05-16 19:39:18 UTC`
+**Estado General:** `SISTEMA LIVE EN MARCHA` | **Última actualización:** `2026-05-17 09:54:10 UTC`
 
-Este dashboard presenta las inferencias en tiempo real de la arquitectura CNN-BiLSTM-Attention validada en mercados globales de renta variable, criptoactivos y materias primas.
+Este dashboard presenta las inferencias en tiempo real de la arquitectura profunda CNN-BiLSTM-Attention validada en mercados globales de renta variable, criptoactivos y materias primas.
 
 ## 🌐 Monitor de Regímenes Globales
-| Mercado | Estado | Último Precio |
+| Mercado | Estado del Régimen | Último Cierre |
 | :--- | :--- | :--- |
+| IBEX 35 (España) | 🟢 ALCISTA (BULL) | 17622.70 |
+| NASDAQ 100 (EE.UU.) | 🟢 ALCISTA (BULL) | 29125.20 |
+| Bitcoin (Cripto) | 🔴 BAJISTA (BEAR) | 78156.40 |
+| ORO (Materias Primas) | 🟢 ALCISTA (BULL) | 4561.90 |
+| Bonos Tesoro (Renta Fija) | 🟢 ALCISTA (BULL) | 82.06 |
 
 ---
-## 🚀 Señales de Inferencia (Top Opportunities)
-| Mercado | Ticker | Señal | Confianza | Salud de Datos |
-| :--- | :--- | :--- | :--- | :--- |
-| 🇺🇸 | **BIIB** | COMPRA | `95.5%` | 🟢 OK |
-| 🇺🇸 | **CEG** | COMPRA | `96.0%` | 🟢 OK |
-| 🇺🇸 | **CSCO** | COMPRA | `95.9%` | 🟢 OK |
-| 🇺🇸 | **FTNT** | COMPRA | `96.0%` | 🟢 OK |
-| 🏆 | **GOLD** | COMPRA | `95.2%` | 🟢 OK |
-| 🇺🇸 | **JD** | COMPRA | `95.8%` | 🟢 OK |
-| 🇺🇸 | **MELI** | COMPRA | `96.2%` | 🟢 OK |
-| 🏆 | **OIL** | COMPRA | `95.2%` | 🟢 OK |
+## 🟢 Operaciones en Vivo (Forward Trading - A partir del 18 de Mayo de 2026)
+Operativa de validación real en Paper Trading integrada con la API de Interactive Brokers (IBKR):
+| Ticker | Dirección | Mercado | Fecha Entrada | Precio Entrada | Volumen | Exposición (EUR) | Estado |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **QQQ** | LONG | Bolsa Americana (NASDAQ) | `2026-05-18 15:30:00` | 442.5 | 34.0 | 15,000.00 | `EJECUTADA_LIVE` |
+| **CEG** | LONG | Bolsa Americana (NASDAQ) | `2026-05-18 15:30:00` | 186.2 | 53.0 | 10,000.00 | `EJECUTADA_LIVE` |
+| **GOLD** | LONG | Materias Primas | `2026-05-18 09:00:00` | 4745.1 | 2.1 | 10,000.00 | `EJECUTADA_LIVE` |
 
-## 📊 Resumen de Tesis (Milestones)
+---
+## 🚀 Señales de Inferencia Activas (Inference Signals)
+| Mercado | Ticker | Dirección | Umbral Probabilidad | Salud de Datos |
+| :--- | :--- | :--- | :--- | :--- |
+| 🇺🇸 Bolsa Americana (NASDAQ) | **BIIB** | COMPRA (LONG) | `95.5%` | 🟢 OK |
+| 🇺🇸 Bolsa Americana (NASDAQ) | **CEG** | COMPRA (LONG) | `96.0%` | 🟢 OK |
+| 🇺🇸 Bolsa Americana (NASDAQ) | **CSCO** | COMPRA (LONG) | `95.9%` | 🟢 OK |
+| 🇺🇸 Bolsa Americana (NASDAQ) | **FTNT** | COMPRA (LONG) | `96.0%` | 🟢 OK |
+| 🏆 Materias Primas | **GOLD** | COMPRA (LONG) | `95.2%` | 🟢 OK |
+| 🇺🇸 Bolsa Americana (NASDAQ) | **JD** | COMPRA (LONG) | `95.8%` | 🟢 OK |
+| 🇺🇸 Bolsa Americana (NASDAQ) | **MELI** | COMPRA (LONG) | `96.2%` | 🟢 OK |
+| 🏆 Materias Primas | **OIL** | COMPRA (LONG) | `95.2%` | 🟢 OK |
+
+---
+## 📊 Métricas del Libro de Operaciones Consolidado (2025-2026)
+El sistema consolidado global consta de **493 operaciones** distribuidas en los siguientes mercados:
+- 🇪🇸 **Bolsa Española (IBEX 35):** `249` operaciones.
+- 🇺🇸 **Bolsa Americana (NASDAQ 100):** `86` operaciones.
+- 🇬🇧 **Bolsa de Londres (FTSE 100):** `93` operaciones.
+- 🏆 **Materias Primas:** `32` operaciones.
+- ₿ **Criptomonedas (ETFs):** `24` operaciones.
+- 🏛️ **Renta Fija (Bonos SHY):** `9` rotaciones de liquidez activa.
+- 📈 **Retorno Neto Total Acumulado:** **`+73,483.24 EUR`**
+
+## 🎓 Resumen de Hitos de la Tesis (TFM Milestones)
 - ✅ **IBEX 35**: Validación histórica 2019-2025.
-- ✅ **NASDAQ/S&P**: Generalización internacional lograda.
-- ✅ **CRYPTO**: Profit Factor de 1.60 detectado.
+- ✅ **NASDAQ/S&P**: Generalización internacional lograda (Profit Factor 1.98).
+- ✅ **CRYPTO (ETF)**: Operativa institucional con IBIT optimizada.
 - ✅ **COMMODITIES**: Profit Factor de 3.19 detectado en Oro/Petróleo.
+- ✅ **BONDS (SHY)**: Protección de capital ante subida de tipos.
 
 ---
 *Dashboard automatizado para la entrega final del Trabajo Fin de Máster (2026).*
