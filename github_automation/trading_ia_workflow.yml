@@ -27,18 +27,18 @@ jobs:
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r github_automation/requirements.txt
 
       - name: Ejecutar Actualizador de IA
-        run: python actualizador_nube.py
+        run: python github_automation/actualizador_nube.py
 
       - name: Generar Dashboard de Señales
-        run: python generador_reporte.py
+        run: python github_automation/generador_reporte.py
 
       - name: Guardar cambios en la Base de Datos y Dashboard
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add cache_predicciones_LIVE.npz README.md
+          git add cache_predicciones_LIVE.npz README.md Operaciones_LIVE_Trading_2026.csv
           git commit -m "Actualizacion automatica diaria y Dashboard: $(date +'%Y-%m-%d')" || echo "No hay cambios que guardar"
           git push
