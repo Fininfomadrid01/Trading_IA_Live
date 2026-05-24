@@ -4,7 +4,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.resolve()
 ROOT = BASE_DIR.parent
-CACHE_PATH = ROOT / "evaluacion_algoritmos" / "resultados" / "cache_predicciones_fixed" / "cache_predicciones_LIVE.npz"
+CACHE_PATH = ROOT / "evaluacion_algoritmos" / "resultados" / "cache_predicciones_fixed" / "cache_predicciones.npz"
 
 PROB_UMBRAL = 0.93
 SL_PCT = 0.047

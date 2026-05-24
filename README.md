@@ -35,6 +35,13 @@ Operativa de validación real en Paper Trading integrada con la API de Interacti
 | 🏆 Materias Primas | **OIL** | COMPRA (LONG) | `95.2%` | 🟢 OK |
 
 ---
+## 🧪 Laboratorio de Modelos Avanzados (R&D)
+Además del modelo base, se han desarrollado y testeado 5 arquitecturas teóricas:
+- **Modelo Híbrido Bidireccional (Long+Short):** ROI **+30.59%**
+- **Filtro de Volatilidad Predictiva:** Win Rate **55.10%**
+- **Gestión Kelly Dinámica:** Optimización de Sizing por confianza IA.
+
+---
 ## 📊 Métricas del Libro de Operaciones Consolidado (2025-2026)
 El sistema consolidado global consta de **562 operaciones** distribuidas en los siguientes mercados:
 - 🇪🇸 **Bolsa Española (IBEX 35):** `456` operaciones.

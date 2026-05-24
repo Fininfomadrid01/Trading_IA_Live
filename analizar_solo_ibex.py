@@ -5,7 +5,7 @@ import yfinance as yf
 
 BASE_DIR = Path(__file__).parent.resolve()
 ROOT = BASE_DIR.parent
-CACHE_PATH = ROOT / "evaluacion_algoritmos" / "resultados" / "cache_predicciones_fixed" / "cache_predicciones_LIVE.npz"
+CACHE_PATH = ROOT / "evaluacion_algoritmos" / "resultados" / "cache_predicciones_fixed" / "cache_predicciones.npz"
 ISINS_IBEX = ROOT / "isins_ibex35.csv"
 TXT_IBEX = BASE_DIR / "HISTORICOS" / "Historicos IBEX 35 19052026.txt"
 
