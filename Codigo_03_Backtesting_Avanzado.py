@@ -15,7 +15,7 @@ import yfinance as yf
 # --- CONFIGURACIÓN ---
 BASE_DIR = Path(__file__).parent.resolve()
 ROOT = BASE_DIR.parent
-CACHE_PATH = ROOT / "evaluacion_algoritmos" / "resultados" / "cache_predicciones_fixed" / "cache_predicciones_LIVE.npz"
+CACHE_PATH = ROOT / "evaluacion_algoritmos" / "resultados" / "cache_predicciones_fixed" / "cache_predicciones.npz"
 OUT_DIR   = BASE_DIR / "resultados"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 

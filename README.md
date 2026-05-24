@@ -36,14 +36,11 @@ Operativa de validación real en Paper Trading integrada con la API de Interacti
 
 ---
 ## 📊 Métricas del Libro de Operaciones Consolidado (2025-2026)
-El sistema consolidado global consta de **493 operaciones** distribuidas en los siguientes mercados:
-- 🇪🇸 **Bolsa Española (IBEX 35):** `249` operaciones.
-- 🇺🇸 **Bolsa Americana (NASDAQ 100):** `86` operaciones.
-- 🇬🇧 **Bolsa de Londres (FTSE 100):** `93` operaciones.
-- 🏆 **Materias Primas:** `32` operaciones.
-- ₿ **Criptomonedas (ETFs):** `24` operaciones.
-- 🏛️ **Renta Fija (Bonos SHY):** `9` rotaciones de liquidez activa.
-- 📈 **Retorno Neto Total Acumulado:** **`+73,483.24 EUR`**
+El sistema consolidado global consta de **562 operaciones** distribuidas en los siguientes mercados:
+- 🇪🇸 **Bolsa Española (IBEX 35):** `456` operaciones.
+- 🌍 **Mercado Global (NASDAQ, Crypto, Oro, Petróleo):** `106` operaciones.
+- 📈 **Retorno Neto Total Acumulado:** **`+61,674.56 EUR`**
+- 🎯 **Win Rate:** **`43.59%`** | **Sharpe:** **`1.73`**
 
 ## 🎓 Resumen de Hitos de la Tesis (TFM Milestones)
 - ✅ **IBEX 35**: Validación histórica 2019-2025.
