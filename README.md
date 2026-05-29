@@ -1,5 +1,5 @@
 # 🏆 TFM: Sistema de Inferencia Multiactivo Global
-**Estado General:** `SISTEMA LIVE EN MARCHA` | **Última actualización:** `2026-05-28 18:11:24 UTC`
+**Estado General:** `SISTEMA LIVE EN MARCHA` | **Última actualización:** `2026-05-29 18:35:53 UTC`
 
 ## 💰 Resumen Ejecutivo de Cartera Real
 | Métrica | Valor |
@@ -17,6 +17,9 @@
 | :--- | :--- | :--- | :--- |
 | **AAPL** | USA | 9,750.84€ | 295.4800109863281 |
 | **NVDA** | USA | 9,804.30€ | 222.8249969482422 |
+| **SAN** | ESPAÑA | 9,997.90€ | 10.76200008392334 |
+| **BBVA** | ESPAÑA | 9,989.10€ | 20.18000030517578 |
+| **AAPL** | USA | 9,969.92€ | 311.5599975585937 |
 
 ### 📊 Estado de Mercados Globales
 | Mercado | Régimen | Estado |
@@ -43,6 +46,9 @@
 ## 📜 Historial de Operaciones Recientes
 | Fecha | Ticker | Dir. | Precio | Estado | PnL |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| 2026-05-29 18:34 | **SAN** | BUY | 10.76200008392334 | `ABIERTA` | +0.00€ |
+| 2026-05-29 18:34 | **BBVA** | BUY | 20.18000030517578 | `ABIERTA` | +0.00€ |
+| 2026-05-29 18:34 | **AAPL** | BUY | 311.5599975585937 | `ABIERTA` | +0.00€ |
 | 2026-05-25 21:06 | **AAPL** | BUY | 295.4800109863281 | `ABIERTA` | +0.00€ |
 | 2026-05-25 21:06 | **NVDA** | BUY | 222.8249969482422 | `ABIERTA` | +0.00€ |
 
